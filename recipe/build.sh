@@ -23,5 +23,12 @@ configure_args=(
 make -j$CPU_COUNT
 make install
 make check
-rm -rf $PREFIX/share/doc/${PKG_NAME#xorg-}
-rm -f $PREFIX/lib/libXdmcp.a $PREFIX/lib/libXdmcp.la
+
+rm -rf $PREFIX/share/doc/libXdmcp
+
+# Prefer dynamic libraries to static, and dump libtool helper files
+for lib_ident in Xdmcp; do
+    if [ -e $PREFIX/lib/lib${lib_ident}$SHLIB_EXT ] ; then
+        rm -f $PREFIX/lib/lib${lib_ident}.a $PREFIX/lib/lib${lib_ident}.la
+    fi
+done
