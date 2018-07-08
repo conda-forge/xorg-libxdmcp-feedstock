@@ -55,7 +55,7 @@ make check
 rm -rf $uprefix/share/doc/libXdmcp
 
 # Non-Windows: prefer dynamic libraries to static, and dump libtool helper files
-if [ -z "VS_MAJOR" ] ; then
+if [ -z "CYGWIN_PREFIX" ] ; then
     for lib_ident in Xdmcp; do
         rm -f $uprefix/lib/lib${lib_ident}.la $uprefix/lib/lib${lib_ident}.a
     done
