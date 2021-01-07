@@ -1,7 +1,4 @@
 #! /bin/bash
-# Get an updated config.sub and config.guess
-rm -rf ./config.*
-cp $BUILD_PREFIX/share/gnuconfig/config.* .
 
 set -e
 set -x
