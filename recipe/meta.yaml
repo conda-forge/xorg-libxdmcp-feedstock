@@ -33,7 +33,7 @@ requirements:
     - {{ stdlib("c") }}             # [unix]
     - {{ compiler('m2w64_c') }}     # [win]
     - {{ stdlib("m2w64_c") }}       # [win]
-    - make                          # [unix]
+    - make
     - autoconf                      # [unix]
     - automake                      # [unix]
     - gettext                       # [unix]
