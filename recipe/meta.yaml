@@ -17,8 +17,10 @@ source:
     - windows.patch  # [win]
 
 build:
-  number: 1
+  number: 2
   detect_binary_files_with_prefix: true
+  run_exports:
+    - {{ pin_subpackage(name|lower) }}
 
 requirements:
   build:
@@ -42,7 +44,6 @@ requirements:
   host:
     - xorg-util-macros
     - xorg-xorgproto
-  run:
 
 test:
   commands:
