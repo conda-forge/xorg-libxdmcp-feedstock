@@ -1,8 +1,6 @@
 #! /bin/bash
 
-set -e
-set -x
-IFS=$' \t\n' # workaround for conda 4.2.13+toolchain bug
+set -xe
 
 # Adopt a Unix-friendly path if we're on Windows (see bld.bat).
 [ -n "$PATH_OVERRIDE" ] && export PATH="$PATH_OVERRIDE"
@@ -23,7 +21,7 @@ fi
 
 # On Windows we need to regenerate the configure scripts.
 if [ -n "$CYGWIN_PREFIX" ] ; then
-    am_version=1.15 # keep sync'ed with meta.yaml
+    am_version=1.16 # keep sync'ed with meta.yaml
     export ACLOCAL=aclocal-$am_version
     export AUTOMAKE=automake-$am_version
     autoreconf_args=(
@@ -37,11 +35,8 @@ if [ -n "$CYGWIN_PREFIX" ] ; then
     # And we need to add the search path that lets libtool find the
     # msys2 stub libraries for ws2_32.
     platlibs=$(cd $(dirname $($CC --print-prog-name=ld))/../sysroot/usr/lib && pwd -W)
-    test -f $platlibs/libws2_32.a || { exit "error locating libws2_32" ; exit 1 ; }
+    test -f $platlibs/libws2_32.a || { echo "error locating libws2_32" ; exit 1 ; }
     export LDFLAGS="$LDFLAGS -L$platlibs"
-    export DLLTOOL=x86_64-w64-mingw32-dlltool.exe
-    export NM=x86_64-w64-mingw32-nm.exe
-    export OBJDUMP=x86_64-w64-mingw32-objdump.exe
 else
     # for other platforms we just need to reconf to get the correct achitecture
     echo libtoolize
@@ -69,12 +64,9 @@ configure_args=(
 ./configure "${configure_args[@]}"
 make -j$CPU_COUNT
 make install
+
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
-make check
+    make check
 fi
 
 rm -rf $uprefix/share/doc/libXdmcp
-
-# Remove any new Libtool files we may have installed. It is intended that
-# conda-build will eventually do this automatically.
-find $uprefix/. -name '*.la' -delete
