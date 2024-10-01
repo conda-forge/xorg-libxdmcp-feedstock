@@ -1,24 +1,22 @@
 {% set xorg_name = "libXdmcp" %}
 {% set xorg_category = "lib" %}
 {% set name = "xorg-" ~ xorg_name %}
-{% set version = "1.1.3" %}
-{% set sha256 = "20523b44aaa513e17c009e873ad7bbc301507a3224c232610ce2e099011c6529" %}
-{% set am_version = "1.15" %} # keep synchronized with build.sh
+{% set version = "1.1.5" %}
+{% set sha256 = "d8a5222828c3adab70adf69a5583f1d32eb5ece04304f7f8392b6a353aa2228c" %}
+{% set am_version = "1.16" %} # keep synchronized with build.sh
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.bz2
-  url: https://www.x.org/releases/individual/{{ xorg_category }}/{{ xorg_name }}-{{ version }}.tar.bz2
+  url: https://www.x.org/releases/individual/{{ xorg_category }}/{{ xorg_name }}-{{ version }}.tar.xz
   sha256: {{ sha256 }}
   patches:
     - windows.patch  # [win]
 
 build:
-  number: 2
-  detect_binary_files_with_prefix: true
+  number: 0
   run_exports:
     - {{ pin_subpackage(name|lower) }}
 
@@ -33,9 +31,9 @@ requirements:
     - m2-base                       # [win]
     - make                          # [unix]
     - m2-make                       # [win]
-    - {{ compiler('c') }}           # [unix]
+    - {{ compiler("c") }}           # [unix]
     - {{ stdlib("c") }}             # [unix]
-    - {{ compiler('m2w64_c') }}     # [win]
+    - {{ compiler("m2w64_c") }}     # [win]
     - {{ stdlib("m2w64_c") }}       # [win]
     - autoconf                      # [unix]
     - automake                      # [unix]
