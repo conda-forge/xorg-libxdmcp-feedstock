@@ -16,7 +16,7 @@ source:
     - windows.patch  # [win]
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage(name|lower) }}
 
@@ -55,6 +55,7 @@ test:
 
 about:
   home: https://www.x.org/
+  dev_url: https://gitlab.freedesktop.org/xorg/lib/libxdmcp
   license: MIT
   license_family: MIT
   license_file: COPYING
