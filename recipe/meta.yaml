@@ -67,7 +67,7 @@ test:
     - if not exist %LIBRARY_LIB%\Xdmcp.lib exit /b 1  # [win and arm64]
     - if not exist %LIBRARY_BIN%\Xdmcp-6.dll exit /b 1  # [win and arm64]
     - if not exist %LIBRARY_LIB%\pkgconfig\xdmcp.pc exit /b 1  # [win and arm64]
-    - findstr /C:"Requires: xproto" "%LIBRARY_LIB%\pkgconfig\xdmcp.pc"  # [win and arm64]
+    - 'findstr /C:"Requires: xproto" "%LIBRARY_LIB%\pkgconfig\xdmcp.pc"'  # [win and arm64]
     - if errorlevel 1 exit /b 1  # [win and arm64]
     - call %CC% /nologo /MD /W4 /I"%LIBRARY_INC%" test_xdmcp.c /link /LIBPATH:"%LIBRARY_LIB%" Xdmcp.lib /OUT:xdmcp_consumer.exe  # [win and arm64]
     - if errorlevel 1 exit /b 1  # [win and arm64]
