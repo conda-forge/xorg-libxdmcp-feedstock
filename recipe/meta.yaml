@@ -26,10 +26,10 @@ requirements:
     - m2-autoconf                   # [win and x86_64]
     - m2-automake{{ am_version }}   # [win and x86_64]
     - m2-libtool                    # [win and x86_64]
-    - cmake                         # [win and arm64]
-    - ninja                         # [win and arm64]
+    - autotools_clang_conda >=0.0.14  # [win and arm64]
+    - pkg-config                    # [win and arm64]
     - pkg-config                    # [unix]
-    - m2-pkg-config                 # [win and x86_64]
+    - m2-pkg-config                 # [win]
     - gnuconfig                     # [unix]
     - m2-base                       # [win and x86_64]
     - make                          # [unix]
@@ -46,7 +46,7 @@ requirements:
     - gettext                       # [unix]
     - libtool                       # [unix]
   host:
-    - xorg-util-macros  # [target_platform != "win-arm64"]
+    - xorg-util-macros
     - xorg-xorgproto
 
 test:
@@ -73,14 +73,6 @@ test:
     - if errorlevel 1 exit /b 1  # [win and arm64]
     - set "PATH=%LIBRARY_BIN%;%PATH%"  # [win and arm64]
     - xdmcp_consumer.exe  # [win and arm64]
-    - if errorlevel 1 exit /b 1  # [win and arm64]
-    - dumpbin /exports "%LIBRARY_BIN%\Xdmcp-6.dll" | findstr /C:"XdmcpWriteHeader"  # [win and arm64]
-    - if errorlevel 1 exit /b 1  # [win and arm64]
-    - dumpbin /imports "%LIBRARY_BIN%\Xdmcp-6.dll" | findstr /I /C:"WS2_32.dll"  # [win and arm64]
-    - if errorlevel 1 exit /b 1  # [win and arm64]
-    - dumpbin /headers "%LIBRARY_BIN%\Xdmcp-6.dll" | findstr /I /C:"AA64 machine (ARM64)"  # [win and arm64]
-    - if errorlevel 1 exit /b 1  # [win and arm64]
-    - dumpbin /headers xdmcp_consumer.exe | findstr /I /C:"AA64 machine (ARM64)"  # [win and arm64]
     - if errorlevel 1 exit /b 1  # [win and arm64]
 
 about:

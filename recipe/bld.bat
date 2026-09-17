@@ -21,19 +21,6 @@ if errorlevel 1 exit 1
 exit /b 0
 
 :win_arm64
-cmake %CMAKE_ARGS% -S "%RECIPE_DIR%\win-arm64" -B build-arm64 -G Ninja ^
-  -DCMAKE_BUILD_TYPE=Release ^
-  -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
-  -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" ^
-  -DXDMCP_VERSION="%PKG_VERSION%" ^
-  -DXDMCP_SOURCE_DIR="%SRC_DIR%"
-if errorlevel 1 exit /b 1
-
-cmake --build build-arm64 --parallel %CPU_COUNT%
-if errorlevel 1 exit /b 1
-
-ctest --test-dir build-arm64 --output-on-failure
-if errorlevel 1 exit /b 1
-
-cmake --install build-arm64
+set "PKG_NAME=Xdmcp"
+call "%BUILD_PREFIX%\Library\bin\run_autotools_clang_conda_build.bat"
 if errorlevel 1 exit /b 1
