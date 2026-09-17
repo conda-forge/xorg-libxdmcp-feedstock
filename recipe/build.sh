@@ -1,6 +1,8 @@
 #! /bin/bash
 # Get an updated config.sub and config.guess
-cp $BUILD_PREFIX/share/gnuconfig/config.* .
+if [[ "${target_platform:-}" != "win-arm64" ]]; then
+    cp "$BUILD_PREFIX"/share/gnuconfig/config.* .
+fi
 
 set -xe
 
@@ -22,7 +24,11 @@ else
 fi
 
 # On Windows we need to regenerate the configure scripts.
-if [ -n "$CYGWIN_PREFIX" ] ; then
+if [[ "${target_platform:-}" == "win-arm64" ]]; then
+    # X11 headers use WIN32, while MSVC-target Clang defines only _WIN32.
+    export CPPFLAGS="$CPPFLAGS -DWIN32"
+    autoreconf -vfi -I "$PREFIX/share/aclocal" -I "$BUILD_PREFIX/Library/usr/share/aclocal"
+elif [ -n "$CYGWIN_PREFIX" ] ; then
     am_version=1.16 # keep sync'ed with meta.yaml
     export ACLOCAL=aclocal-$am_version
     export AUTOMAKE=automake-$am_version
@@ -64,6 +70,9 @@ configure_args=(
 )
 
 ./configure "${configure_args[@]}"
+if [[ "${target_platform:-}" == "win-arm64" ]]; then
+    patch_libtool
+fi
 make -j$CPU_COUNT
 make install
 
